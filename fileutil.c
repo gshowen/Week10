@@ -25,18 +25,8 @@ char ** loadFileAA(char *filename, int *size)
 	    perror("Can't open file");
 	    exit(1);
 	}
-	
-	// TODO
-	// Allocate memory for an array of strings (arr).
-	// Read the file line by line.
-    //   Trim newline.
-	//   Expand array if necessary (realloc).
-	//   Allocate memory for the string (str).
-	//   Copy each line into the string (use strcpy).
-	//   Attach the string to the large array (assignment =).
-    // Close the file.
 
-	int capacity = 5; //sets the capacity of the array of strings to 5 to start
+	int capacity = 10; //sets the capacity of the array of strings to 10 to start
 	char ** arr = malloc(capacity * sizeof(char *)); //array of stings
 	
 
@@ -53,20 +43,17 @@ char ** loadFileAA(char *filename, int *size)
 
 		//expand capacity if the size already hit the capacity
 		if(*size == capacity){
-			printf("cap:%d", capacity);
-			capacity = capacity + capacity/2.0;
-			printf(" --> %d\n", capacity);
+			capacity += capacity/2.0;
 			arr = realloc(arr, capacity*sizeof(char *));
 		}
 
 		//dynamically allocate space for the line to be put into arr
-		arr[*size] = malloc(strlen(lineRead) * sizeof(char));
+		arr[*size] = malloc((strlen(lineRead)+1) * sizeof(char)); //+1 for the '/0'
 		
 		//copy the line from the file into arr
 		strcpy(arr[*size], lineRead);
-		printf("%d: %s\n", *size, lineRead);
 
-		++*size; //pre increment needed because the dereferencing stopped the incrementation for some reason
+		++*size; //pre increment needed because the dereferencing stopped the incrementation
 	}
 
 	//close file
